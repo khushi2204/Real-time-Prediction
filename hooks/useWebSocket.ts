@@ -18,7 +18,7 @@ export function useWebSocket() {
           const price = parseFloat(data.p);
           
           // Only update if price difference is at least $1
-          if (lastPrice === null || Math.abs(price - lastPrice) >= 500) {
+          if (lastPrice === null || Math.abs(price - lastPrice) >= 50) {
             toast.success(`💰 BTC Price: $${price.toFixed(2)}`);
             setMessages((prev) => [...prev, `BTC Price: $${price.toFixed(2)}`]);
             lastPrice = price; // Update last price
