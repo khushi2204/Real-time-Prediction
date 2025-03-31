@@ -1,48 +1,20 @@
 "use client";
 import { Cloud, LayoutDashboard, LifeBuoy, Newspaper, Settings, Wallet } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { Toaster, toast } from "sonner"; // Toast notifications
+import { Toaster } from "sonner"; // Toast notifications
 import { StatsChart } from "../components/stats-chart";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { VaultTable } from "../components/vault-table";
+import { useWebSocket } from "../hooks/useWebSocket"; // Import WebSocket Hook
 
 export default function Page() {
-  const [messages, setMessages] = useState<string[]>([]);
-
-  useEffect(() => {
-    const socket = new WebSocket("wss://echo-websocket.hoppscotch.io");
-
-    socket.onopen = () => console.log("✅ Connected to WebSocket");
-
-    socket.onmessage = (event) => {
-      console.log("📩 WebSocket Data Received:", event.data);
-      try {
-        const data = JSON.parse(event.data);
-
-        if (data.type === "price_alert") {
-          toast.success(`🚀 Crypto Alert: ${data.message}`);
-        } else if (data.type === "weather_alert") {
-          toast.warning(`🌦️ Weather Alert: ${data.message}`);
-        }
-
-        setMessages((prev) => [...prev, data.message]);
-      } catch (error) {
-        console.error("❌ Error parsing WebSocket message:", error);
-      }
-    };
-
-    socket.onerror = (error) => console.error("❌ WebSocket Error:", error);
-    socket.onclose = () => console.log("⚠️ WebSocket Disconnected");
-
-    return () => socket.close();
-  }, []);
+  const messages = useWebSocket(); // Use WebSocket Hook
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <Toaster position="top-right" richColors /> {/* Toast Notification */}
+      <Toaster position="top-right" richColors />
       <div className="grid lg:grid-cols-[280px_1fr]">
         {/* Sidebar */}
         <aside className="border-r bg-black ">
