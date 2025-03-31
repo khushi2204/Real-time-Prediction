@@ -111,7 +111,7 @@ export default function WeatherPage() {
                 placeholder="Enter city name..."
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                className="bg-black"
+                className="bg-black text-white"
                 onKeyDown={(e) => e.key === "Enter" && fetchWeather()}
               />
               <Button onClick={fetchWeather} disabled={loading} className="bg-primary">
@@ -141,19 +141,19 @@ export default function WeatherPage() {
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                  <Card className="p-4 bg-background/30">
+                  <Card className="p-4 bg-black text-white">
                     <div className="text-sm text-muted-foreground">Feels Like</div>
                     <div className="text-xl font-semibold">{Math.round(weather.main.feels_like)}°C</div>
                   </Card>
-                  <Card className="p-4 bg-background/30">
+                  <Card className="p-4 bg-black text-white">
                     <div className="text-sm text-muted-foreground">Humidity</div>
                     <div className="text-xl font-semibold">{weather.main.humidity}%</div>
                   </Card>
-                  <Card className="p-4 bg-background/30">
+                  <Card className="p-4 bg-black text-white">
                     <div className="text-sm text-muted-foreground">Wind Speed</div>
                     <div className="text-xl font-semibold">{weather.wind.speed} m/s</div>
                   </Card>
-                  <Card className="p-4 bg-background/30">
+                  <Card className="p-4 bg-black text-white">
                     <div className="text-sm text-muted-foreground">Pressure</div>
                     <div className="text-xl font-semibold">{weather.main.pressure} hPa</div>
                   </Card>

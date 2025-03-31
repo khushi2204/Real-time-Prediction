@@ -93,20 +93,20 @@ export default function NewsPage() {
           </nav>
         </aside>
         <main className="p-6">
-          <div className="mb-6 flex items-center justify-between">
+          <div className="mb-6 flex items-center justify-between text-white">
             <div className="space-y-1">
               <h1 className="text-2xl font-bold">News Articles</h1>
               <div className="text-sm text-muted-foreground">Search for the latest news on any topic</div>
             </div>
           </div>
 
-          <Card className="p-6 bg-black backdrop-blur mb-6">
+          <Card className="p-6 bg-black mb-6">
             <div className="flex flex-col md:flex-row gap-4">
               <Input
                 placeholder="Enter keyword (e.g., Bitcoin, Technology)"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="bg-black"
+                className="bg-black text-white"
                 onKeyDown={(e) => e.key === "Enter" && fetchNews()}
               />
               <Button onClick={fetchNews} disabled={loading} className="bg-primary">
@@ -122,7 +122,7 @@ export default function NewsPage() {
           {news.length > 0 && (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {news.map((article, index) => (
-                <Card key={index} className="overflow-hidden bg-background/50 backdrop-blur flex flex-col">
+                <Card key={index} className="overflow-hidden bg-black text-white flex flex-col">
                   {article.urlToImage && (
                     <div className="h-48 overflow-hidden">
                       <img

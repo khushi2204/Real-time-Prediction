@@ -103,7 +103,7 @@ export default function CryptoPage() {
                 placeholder="Enter cryptocurrency name (e.g., bitcoin, ethereum)"
                 value={crypto}
                 onChange={(e) => setCrypto(e.target.value)}
-                className="bg-black"
+                className="bg-black text-white" 
                 onKeyDown={(e) => e.key === "Enter" && fetchCryptoData()}
               />
               <Button onClick={fetchCryptoData} disabled={loading} className="bg-primary">
@@ -117,15 +117,15 @@ export default function CryptoPage() {
 
             {cryptoData && (
               <div className="grid md:grid-cols-3 gap-6">
-                <Card className="p-6 bg-background/30">
+                <Card className="p-6 bg-black text-white">
                   <div className="text-sm text-muted-foreground">Current Price</div>
                   <div className="text-3xl font-bold">${cryptoData.usd.toLocaleString()}</div>
                 </Card>
-                <Card className="p-6 bg-background/30">
+                <Card className="p-6 bg-black text-white">
                   <div className="text-sm text-muted-foreground">Market Cap</div>
                   <div className="text-3xl font-bold">${cryptoData.usd_market_cap.toLocaleString()}</div>
                 </Card>
-                <Card className="p-6 bg-background/30">
+                <Card className="p-6 bg-black text-white">
                   <div className="text-sm text-muted-foreground">24h Change</div>
                   <div
                     className={`text-3xl font-bold ${
