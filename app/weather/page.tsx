@@ -125,11 +125,11 @@ export default function WeatherPage() {
 
             {weather && (
               <div className="grid md:grid-cols-2 gap-6">
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 text-white">
                   <div className="text-3xl font-bold">{weather.name}</div>
                   <div className="flex items-center">
                     <div className="text-5xl font-bold">{Math.round(weather.main.temp)}°C</div>
-                    <div className="ml-4">
+                    <div className="ml-4 text-white">
                       <img
                         src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
                         alt={weather.weather[0].description}
