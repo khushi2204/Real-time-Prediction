@@ -1,15 +1,50 @@
-import { Cloud, LayoutDashboard, LifeBuoy, Newspaper, Settings, Wallet } from "lucide-react"
-import Link from "next/link"
-import { StatsChart } from "../components/stats-chart"
-import { Button } from "../components/ui/button"
-import { Card } from "../components/ui/card"
-import { Input } from "../components/ui/input"
-import { VaultTable } from "../components/vault-table"
+"use client";
+import { Cloud, LayoutDashboard, LifeBuoy, Newspaper, Settings, Wallet } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { Toaster, toast } from "sonner"; // Toast notifications
+import { StatsChart } from "../components/stats-chart";
+import { Button } from "../components/ui/button";
+import { Card } from "../components/ui/card";
+import { Input } from "../components/ui/input";
+import { VaultTable } from "../components/vault-table";
 
 export default function Page() {
+  const [messages, setMessages] = useState<string[]>([]);
+
+  useEffect(() => {
+    const socket = new WebSocket("wss://echo-websocket.hoppscotch.io");
+
+    socket.onopen = () => console.log("✅ Connected to WebSocket");
+
+    socket.onmessage = (event) => {
+      console.log("📩 WebSocket Data Received:", event.data);
+      try {
+        const data = JSON.parse(event.data);
+
+        if (data.type === "price_alert") {
+          toast.success(`🚀 Crypto Alert: ${data.message}`);
+        } else if (data.type === "weather_alert") {
+          toast.warning(`🌦️ Weather Alert: ${data.message}`);
+        }
+
+        setMessages((prev) => [...prev, data.message]);
+      } catch (error) {
+        console.error("❌ Error parsing WebSocket message:", error);
+      }
+    };
+
+    socket.onerror = (error) => console.error("❌ WebSocket Error:", error);
+    socket.onclose = () => console.log("⚠️ WebSocket Disconnected");
+
+    return () => socket.close();
+  }, []);
+
   return (
     <div className="min-h-screen bg-black text-white">
+      <Toaster position="top-right" richColors /> {/* Toast Notification */}
       <div className="grid lg:grid-cols-[280px_1fr]">
+        {/* Sidebar */}
         <aside className="border-r bg-black ">
           <div className="flex h-16 items-center gap-2 border-b px-6">
             <Wallet className="h-6 w-6" />
@@ -53,59 +88,41 @@ export default function Page() {
             </Button>
           </nav>
         </aside>
+
+        {/* Main Content */}
         <main className="p-6">
-          {/* <div className="mb-6 flex items-center justify-between  text-white bg-black">
-            <div className="space-y-1">
-              <h1 className="text-2xl font-bold">Overview</h1>
-              
-            </div>
-          </div>
-          <div className="grid gap-4 md:grid-cols-3 text-white bg-black">
-            <MetricsCard
-              title="Your Balance"
-              value="$74,892"
-              change={{ value: "$1,340", percentage: "-2.1%", isPositive: false }}
-            />
-            <MetricsCard
-              title="Your Deposits"
-              value="$54,892"
-              change={{ value: "$1,340", percentage: "+13.2%", isPositive: true }}
-            />
-            <MetricsCard
-              title="Accrued Yield"
-              value="$20,892"
-              change={{ value: "$1,340", percentage: "+1.2%", isPositive: true }}
-            />
-          </div> */}
           <Card className="mt-6 p-6 bg-black">
-            <div className="mb-4 flex items-center justify-between text-white ">
-              <h2 className="text-lg font-semibold ">General Statistics</h2>
+            <div className="mb-4 flex items-center justify-between text-white">
+              <h2 className="text-lg font-semibold">General Statistics</h2>
               <div className="flex gap-2">
-                <Button size="sm" variant="ghost">
-                  Today
-                </Button>
-                <Button size="sm" variant="ghost">
-                  Last week
-                </Button>
-                <Button size="sm" variant="ghost">
-                  Last month
-                </Button>
-                <Button size="sm" variant="ghost">
-                  Last 6 month
-                </Button>
-                <Button size="sm" variant="ghost">
-                  Year
-                </Button>
+                <Button size="sm" variant="ghost">Today</Button>
+                <Button size="sm" variant="ghost">Last week</Button>
+                <Button size="sm" variant="ghost">Last month</Button>
+                <Button size="sm" variant="ghost">Last 6 months</Button>
+                <Button size="sm" variant="ghost">Year</Button>
               </div>
             </div>
             <StatsChart />
           </Card>
+
+          {/* Vault Table */}
           <div className="mt-6">
             <VaultTable />
+          </div>
+
+          {/* WebSocket Message Display */}
+          <div className="mt-6 bg-gray-800 p-4 rounded-lg">
+            <h3 className="text-lg font-semibold">WebSocket Messages</h3>
+            <div className="h-32 overflow-auto border border-gray-600 p-2">
+              {messages.length > 0 ? (
+                messages.map((msg, index) => <p key={index}>{msg}</p>)
+              ) : (
+                <p className="text-gray-400">No messages received yet...</p>
+              )}
+            </div>
           </div>
         </main>
       </div>
     </div>
-  )
+  );
 }
-
