@@ -7,7 +7,7 @@ export function useWebSocket() {
   let lastPrice: number | null = null; // Store last BTC price
 
   useEffect(() => {
-    const cryptoSocket = new WebSocket("wss://stream.binance.com:9443");
+    const cryptoSocket = new WebSocket("wss://stream.binance.com:9443/ws/btcusdt@trade");
 
     cryptoSocket.onopen = () => console.log("✅ Connected to Binance WebSocket");
 
