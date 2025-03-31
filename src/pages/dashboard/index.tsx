@@ -1,20 +1,23 @@
-import Card from '@/components/Card';
-import Header from '@/components/Header';
-import Sidebar from '@/components/Sidebar';
+// components/layouts/DashboardLayout.tsx
+import { ReactNode } from 'react';
+import GridBackgroundDemo from '../../components/ui/grid-background-demo';
+import { Sidebar } from '../../components/ui/Sidebar';
 
-export default function Dashboard() {
+interface DashboardLayoutProps {
+  children: ReactNode;
+}
+
+export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
-    <div className="flex min-h-screen">
-      <Sidebar />
-      <main className="flex-1 p-8">
-        <Header />
-        <h1 className="text-3xl font-bold mb-6">Dashboard Overview</h1>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card title="Weather" content="Weather Data Coming Soon" />
-          <Card title="Cryptocurrency" content="Crypto Data Coming Soon" />
-          <Card title="News" content="News Data Coming Soon" />
-        </div>
-      </main>
+    <div className="relative flex min-h-screen bg-gray-900 text-white">
+      <Sidebar>
+        {/* Add appropriate content or leave empty if no children are needed */}
+        <div>Sidebar Content</div>
+      </Sidebar>
+      <div className="flex-1 p-8">
+        <GridBackgroundDemo />
+        {children}
+      </div>
     </div>
   );
 }

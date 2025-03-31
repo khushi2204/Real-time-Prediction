@@ -1,8 +1,16 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./src/**/*.{html,js,ts,jsx,tsx}",
+    "./components/**/*.{html,js,ts,jsx,tsx}",
+    "./pages/**/*.{html,js,ts,jsx,tsx}",
+  ],
   theme: {
     extend: {},
   },
   plugins: [],
+  safelist: [
+    {
+      pattern: /mask-image.*/,
+    },
+  ],
 };
